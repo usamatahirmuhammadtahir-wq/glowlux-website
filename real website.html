@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowLux — Beauty & Fashion</title>
+<meta name="description" content="Discover top-rated beauty, fashion, shoes, bags & jewelry brands — all linking directly to the brand's official website.">
+<meta property="og:title" content="GlowLux — Beauty & Fashion">
+<meta property="og:description" content="Discover top-rated beauty, fashion, shoes, bags & jewelry brands — all linking directly to the brand's official website.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://logo.clearbit.com/nike.com">
+<!-- TODO: paste your Pinterest verification meta tag here once you get it from Pinterest business account settings -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #f472b6;
+    --rose: #e11d48;
+    --gold: #d97706;
+    --cream: #fdf6f0;
+    --dark: #1a0a1a;
+    --text: #3d1a2e;
+    --muted: #8b6577;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--dark);
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* ── STARS ── */
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── 3D FLOATING OBJECTS ── */
+  .floaters {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .floater {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    filter: blur(1px);
+    animation: float3d 8s ease-in-out infinite;
+  }
+  .floater:nth-child(1)  { width:80px;  height:80px;  background:radial-gradient(circle at 35% 35%, #f9a8d4, #be185d); top:10%; left:5%;  animation-duration:9s;  animation-delay:0s; }
+  .floater:nth-child(2)  { width:50px;  height:50px;  background:radial-gradient(circle at 35% 35%, #fde68a, #d97706); top:20%; left:88%; animation-duration:7s;  animation-delay:1s; }
+  .floater:nth-child(3)  { width:100px; height:100px; background:radial-gradient(circle at 35% 35%, #a78bfa, #6d28d9); top:55%; left:3%;  animation-duration:11s; animation-delay:2s; }
+  .floater:nth-child(4)  { width:60px;  height:60px;  background:radial-gradient(circle at 35% 35%, #6ee7b7, #059669); top:70%; left:92%; animation-duration:8s;  animation-delay:0.5s; }
+  .floater:nth-child(5)  { width:40px;  height:40px;  background:radial-gradient(circle at 35% 35%, #fbcfe8, #db2777); top:40%; left:95%; animation-duration:6s;  animation-delay:3s; }
+  .floater:nth-child(6)  { width:70px;  height:70px;  background:radial-gradient(circle at 35% 35%, #fcd34d, #b45309); top:85%; left:10%; animation-duration:10s; animation-delay:1.5s; }
+  .floater:nth-child(7)  { width:35px;  height:35px;  background:radial-gradient(circle at 35% 35%, #c4b5fd, #7c3aed); top:5%;  left:50%; animation-duration:7.5s; animation-delay:4s; }
+  .floater:nth-child(8)  { width:55px;  height:55px;  background:radial-gradient(circle at 35% 35%, #fda4af, #e11d48); top:30%; left:45%; animation-duration:9.5s; animation-delay:2.5s; }
+
+  /* diamond floaters */
+  .floater-diamond {
+    position: absolute;
+    width: 20px; height: 20px;
+    background: linear-gradient(135deg, #fde68a, #fbbf24);
+    transform: rotate(45deg);
+    animation: float3d 6s ease-in-out infinite;
+    opacity: 0.25;
+  }
+  .floater-diamond:nth-child(9)  { top:15%; left:70%; animation-delay:0.8s; }
+  .floater-diamond:nth-child(10) { top:60%; left:25%; animation-delay:2s; }
+  .floater-diamond:nth-child(11) { top:80%; left:60%; animation-delay:3.5s; width:14px; height:14px; }
+
+  @keyframes float3d {
+    0%,100% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); }
+    25%      { transform: translateY(-30px) translateX(10px) rotate(5deg) scale(1.05); }
+    50%      { transform: translateY(-15px) translateX(-15px) rotate(-3deg) scale(0.97); }
+    75%      { transform: translateY(-40px) translateX(5px) rotate(8deg) scale(1.08); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(26,10,26,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(244,114,182,0.15);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, #f9a8d4, #fde68a, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--pink); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, #f9a8d4, #fde68a, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.6);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.9s;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1.2s;
+  }
+  .btn-primary {
+    padding: 0.9rem 2.2rem;
+    background: linear-gradient(135deg, #e11d48, #db2777);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(225,29,72,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(225,29,72,0.5); }
+  .btn-ghost {
+    padding: 0.9rem 2.2rem;
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--pink); background: rgba(244,114,182,0.1); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 5rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  .section-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 1rem;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+  .divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, #e11d48, #f472b6);
+    margin: 1rem 0 2rem;
+    border-radius: 2px;
+  }
+
+  /* ── BRAND CARDS ── */
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.2rem;
+  }
+  .brand-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .brand-card.visible {
+    animation: cardReveal 0.6s ease forwards;
+  }
+  @keyframes cardReveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .brand-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(244,114,182,0.4);
+    background: rgba(244,114,182,0.07);
+  }
+  .brand-img {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: #fff;
+    padding: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .brand-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.04em;
+  }
+  .brand-tag {
+    font-size: 0.68rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(244,114,182,0.15);
+    color: var(--pink);
+    border: 1px solid rgba(244,114,182,0.2);
+  }
+
+  /* ── CATEGORY SECTION WRAPPER ── */
+  .cat-section {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* ── GLOW SEPARATOR ── */
+  .glow-sep {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(244,114,182,0.4), transparent);
+    margin: 1rem 0;
+    position: relative;
+    z-index: 2;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── FEATURED BANNER ── */
+  .featured-banner {
+    position: relative;
+    z-index: 2;
+    margin: 2rem auto;
+    max-width: 1300px;
+    padding: 0 2rem;
+  }
+  .featured-inner {
+    background: linear-gradient(135deg, rgba(225,29,72,0.2), rgba(109,40,217,0.2));
+    border: 1px solid rgba(244,114,182,0.2);
+    border-radius: 24px;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    backdrop-filter: blur(10px);
+  }
+  .featured-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+  .featured-text p { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.6; max-width: 380px; }
+  .featured-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem; }
+  .ftag {
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 3rem 2rem;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.82rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer a { color: var(--pink); text-decoration: none; }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.8s;
+  }
+  .scroll-indicator span { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  .scroll-mouse {
+    width: 22px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 11px;
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+  }
+  .scroll-dot {
+    width: 3px; height: 8px;
+    background: var(--pink);
+    border-radius: 2px;
+    animation: scrollDot 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDot {
+    0%,100% { transform: translateY(0); opacity: 1; }
+    50%      { transform: translateY(10px); opacity: 0.2; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .brands-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    .featured-inner { padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Stars Canvas -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- 3D Floating Objects -->
+<div class="floaters">
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater"></div>
+  <div class="floater-diamond"></div>
+  <div class="floater-diamond"></div>
+  <div class="floater-diamond"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="logo">GlowLux ✦</div>
+  <ul class="nav-links">
+    <li><a href="#skincare">Skincare</a></li>
+    <li><a href="#clothing">Clothing</a></li>
+    <li><a href="#shoes">Shoes</a></li>
+    <li><a href="#bags">Bags</a></li>
+    <li><a href="#jewelry">Jewelry</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <p class="hero-eyebrow">✦ Curated Picks · Affiliate Boutique</p>
+  <h1>Your World of<br><span>Beauty & Style</span></h1>
+  <p class="hero-sub">Discover top-rated brands in skincare, fashion, shoes, bags & jewelry — each one linking straight to the brand's official site</p>
+  <div class="hero-btns">
+    <a href="#skincare" class="btn-primary">Shop Now</a>
+    <a href="#clothing" class="btn-ghost">Explore Fashion</a>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<!-- ── SKINCARE ── -->
+<div id="skincare" class="cat-section">
+  <p class="section-label">✦ Most Rated</p>
+  <h2 class="section-title">Beauty & Skincare</h2>
+  <div class="divider"></div>
+  <p class="section-sub">Dermatologist-loved, customer-approved skincare and makeup brands.</p>
+  <div class="brands-grid" id="skincare-grid">
+
+    <a href="https://www.cerave.com" target="_blank" class="brand-card" data-delay="0">
+      <img class="brand-img" src="https://logo.clearbit.com/cerave.com" alt="CeraVe" onerror="this.src='https://ui-avatars.com/api/?name=CeraVe&background=4f6ef7&color=fff&size=70'">
+      <div class="brand-name">CeraVe</div>
+      <div class="brand-tag">Moisturizers</div>
+    </a>
+
+    <a href="https://www.cetaphil.com" target="_blank" class="brand-card" data-delay="1">
+      <img class="brand-img" src="https://logo.clearbit.com/cetaphil.com" alt="Cetaphil" onerror="this.src='https://ui-avatars.com/api/?name=Cetaphil&background=22c55e&color=fff&size=70'">
+      <div class="brand-name">Cetaphil</div>
+      <div class="brand-tag">Gentle Care</div>
+    </a>
+
+    <a href="https://theordinary.com" target="_blank" class="brand-card" data-delay="2">
+      <img class="brand-img" src="https://logo.clearbit.com/theordinary.com" alt="The Ordinary" onerror="this.src='https://ui-avatars.com/api/?name=TO&background=1a1a1a&color=fff&size=70'">
+      <div class="brand-name">The Ordinary</div>
+      <div class="brand-tag">Serums</div>
+    </a>
+
+    <a href="https://www.elfcosmetics.com" target="_blank" class="brand-card" data-delay="3">
+      <img class="brand-img" src="https://logo.clearbit.com/elfcosmetics.com" alt="e.l.f. Cosmetics" onerror="this.src='https://ui-avatars.com/api/?name=elf&background=e11d48&color=fff&size=70'">
+      <div class="brand-name">e.l.f. Cosmetics</div>
+      <div class="brand-tag">Makeup</div>
+    </a>
+
+    <a href="https://www.laroche-posay.us" target="_blank" class="brand-card" data-delay="4">
+      <img class="brand-img" src="https://logo.clearbit.com/laroche-posay.com" alt="La Roche-Posay" onerror="this.src='https://ui-avatars.com/api/?name=LRP&background=0ea5e9&color=fff&size=70'">
+      <div class="brand-name">La Roche-Posay</div>
+      <div class="brand-tag">Sensitive Skin</div>
+    </a>
+
+    <a href="https://www.neutrogena.com" target="_blank" class="brand-card" data-delay="5">
+      <img class="brand-img" src="https://logo.clearbit.com/neutrogena.com" alt="Neutrogena" onerror="this.src='https://ui-avatars.com/api/?name=Neutrogena&background=f59e0b&color=fff&size=70'">
+      <div class="brand-name">Neutrogena</div>
+      <div class="brand-tag">SPF & Acne</div>
+    </a>
+
+    <a href="https://www.rarebeauty.com" target="_blank" class="brand-card" data-delay="6">
+      <img class="brand-img" src="https://logo.clearbit.com/rarebeauty.com" alt="Rare Beauty" onerror="this.src='https://ui-avatars.com/api/?name=RB&background=db2777&color=fff&size=70'">
+      <div class="brand-name">Rare Beauty</div>
+      <div class="brand-tag">Clean Makeup</div>
+    </a>
+
+    <a href="https://www.fentybeauty.com" target="_blank" class="brand-card" data-delay="7">
+      <img class="brand-img" src="https://logo.clearbit.com/fentybeauty.com" alt="Fenty Beauty" onerror="this.src='https://ui-avatars.com/api/?name=Fenty&background=7c3aed&color=fff&size=70'">
+      <div class="brand-name">Fenty Beauty</div>
+      <div class="brand-tag">Foundation</div>
+    </a>
+
+  </div>
+</div>
+
+<div class="glow-sep"></div>
+
+<!-- ── CLOTHING ── -->
+<div id="clothing" class="cat-section">
+  <p class="section-label">✦ Top Picks</p>
+  <h2 class="section-title">Clothing</h2>
+  <div class="divider"></div>
+  <p class="section-sub">Global fashion icons from activewear to everyday essentials.</p>
+  <div class="brands-grid" id="clothing-grid">
+
+    <a href="https://www.nike.com" target="_blank" class="brand-card" data-delay="0">
+      <img class="brand-img" src="https://logo.clearbit.com/nike.com" alt="Nike" onerror="this.src='https://ui-avatars.com/api/?name=Nike&background=111&color=fff&size=70'">
+      <div class="brand-name">Nike</div>
+      <div class="brand-tag">Sportswear</div>
+    </a>
+
+    <a href="https://www.adidas.com" target="_blank" class="brand-card" data-delay="1">
+      <img class="brand-img" src="https://logo.clearbit.com/adidas.com" alt="Adidas" onerror="this.src='https://ui-avatars.com/api/?name=Adidas&background=000&color=fff&size=70'">
+      <div class="brand-name">Adidas</div>
+      <div class="brand-tag">Lifestyle</div>
+    </a>
+
+    <a href="https://www.lululemon.com" target="_blank" class="brand-card" data-delay="2">
+      <img class="brand-img" src="https://logo.clearbit.com/lululemon.com" alt="Lululemon" onerror="this.src='https://ui-avatars.com/api/?name=LL&background=e11d48&color=fff&size=70'">
+      <div class="brand-name">Lululemon</div>
+      <div class="brand-tag">Athleisure</div>
+    </a>
+
+    <a href="https://www.levi.com" target="_blank" class="brand-card" data-delay="3">
+      <img class="brand-img" src="https://logo.clearbit.com/levi.com" alt="Levi's" onerror="this.src='https://ui-avatars.com/api/?name=Levis&background=1d4ed8&color=fff&size=70'">
+      <div class="brand-name">Levi's</div>
+      <div class="brand-tag">Denim</div>
+    </a>
+
+    <a href="https://www.zara.com" target="_blank" class="brand-card" data-delay="4">
+      <img class="brand-img" src="https://logo.clearbit.com/zara.com" alt="Zara" onerror="this.src='https://ui-avatars.com/api/?name=Zara&background=374151&color=fff&size=70'">
+      <div class="brand-name">Zara</div>
+      <div class="brand-tag">Trendy</div>
+    </a>
+
+    <a href="https://www2.hm.com" target="_blank" class="brand-card" data-delay="5">
+      <img class="brand-img" src="https://logo.clearbit.com/hm.com" alt="H&M" onerror="this.src='https://ui-avatars.com/api/?name=H%26M&background=e11d48&color=fff&size=70'">
+      <div class="brand-name">H&M</div>
+      <div class="brand-tag">Affordable</div>
+    </a>
+
+  </div>
+</div>
+
+<div class="glow-sep"></div>
+
+<!-- ── SHOES ── -->
+<div id="shoes" class="cat-section">
+  <p class="section-label">✦ Step in Style</p>
+  <h2 class="section-title">Shoes</h2>
+  <div class="divider"></div>
+  <p class="section-sub">Sneakers, comfort, and classics — the best footwear brands.</p>
+  <div class="brands-grid" id="shoes-grid">
+
+    <a href="https://www.nike.com" target="_blank" class="brand-card" data-delay="0">
+      <img class="brand-img" src="https://logo.clearbit.com/nike.com" alt="Nike Shoes" onerror="this.src='https://ui-avatars.com/api/?name=Nike&background=111&color=fff&size=70'">
+      <div class="brand-name">Nike</div>
+      <div class="brand-tag">Sneakers</div>
+    </a>
+
+    <a href="https://www.newbalance.com" target="_blank" class="brand-card" data-delay="1">
+      <img class="brand-img" src="https://logo.clearbit.com/newbalance.com" alt="New Balance" onerror="this.src='https://ui-avatars.com/api/?name=NB&background=cf2027&color=fff&size=70'">
+      <div class="brand-name">New Balance</div>
+      <div class="brand-tag">Running</div>
+    </a>
+
+    <a href="https://www.skechers.com" target="_blank" class="brand-card" data-delay="2">
+      <img class="brand-img" src="https://logo.clearbit.com/skechers.com" alt="Skechers" onerror="this.src='https://ui-avatars.com/api/?name=SK&background=003399&color=fff&size=70'">
+      <div class="brand-name">Skechers</div>
+      <div class="brand-tag">Comfort</div>
+    </a>
+
+    <a href="https://www.converse.com" target="_blank" class="brand-card" data-delay="3">
+      <img class="brand-img" src="https://logo.clearbit.com/converse.com" alt="Converse" onerror="this.src='https://ui-avatars.com/api/?name=CV&background=111&color=fff&size=70'">
+      <div class="brand-name">Converse</div>
+      <div class="brand-tag">Classic</div>
+    </a>
+
+    <a href="https://www.vans.com" target="_blank" class="brand-card" data-delay="4">
+      <img class="brand-img" src="https://logo.clearbit.com/vans.com" alt="Vans" onerror="this.src='https://ui-avatars.com/api/?name=Vans&background=cc0000&color=fff&size=70'">
+      <div class="brand-name">Vans</div>
+      <div class="brand-tag">Skate Style</div>
+    </a>
+
+  </div>
+</div>
+
+<div class="glow-sep"></div>
+
+<!-- ── BAGS ── -->
+<div id="bags" class="cat-section">
+  <p class="section-label">✦ Carry with Confidence</p>
+  <h2 class="section-title">Bags</h2>
+  <div class="divider"></div>
+  <p class="section-sub">Designer and accessible luxury bags for every occasion.</p>
+  <div class="brands-grid" id="bags-grid">
+
+    <a href="https://www.coach.com" target="_blank" class="brand-card" data-delay="0">
+      <img class="brand-img" src="https://logo.clearbit.com/coach.com" alt="Coach" onerror="this.src='https://ui-avatars.com/api/?name=Coach&background=8b4513&color=fff&size=70'">
+      <div class="brand-name">Coach</div>
+      <div class="brand-tag">Luxury</div>
+    </a>
+
+    <a href="https://www.michaelkors.com" target="_blank" class="brand-card" data-delay="1">
+      <img class="brand-img" src="https://logo.clearbit.com/michaelkors.com" alt="Michael Kors" onerror="this.src='https://ui-avatars.com/api/?name=MK&background=d4af37&color=fff&size=70'">
+      <div class="brand-name">Michael Kors</div>
+      <div class="brand-tag">Designer</div>
+    </a>
+
+    <a href="https://www.katespade.com" target="_blank" class="brand-card" data-delay="2">
+      <img class="brand-img" src="https://logo.clearbit.com/katespade.com" alt="Kate Spade" onerror="this.src='https://ui-avatars.com/api/?name=KS&background=000&color=f9a8d4&size=70'">
+      <div class="brand-name">Kate Spade</div>
+      <div class="brand-tag">Playful</div>
+    </a>
+
+    <a href="https://www.guess.com" target="_blank" class="brand-card" data-delay="3">
+      <img class="brand-img" src="https://logo.clearbit.com/guess.com" alt="Guess" onerror="this.src='https://ui-avatars.com/api/?name=Guess&background=111&color=fff&size=70'">
+      <div class="brand-name">Guess</div>
+      <div class="brand-tag">Trendy</div>
+    </a>
+
+  </div>
+</div>
+
+<div class="glow-sep"></div>
+
+<!-- ── JEWELRY ── -->
+<div id="jewelry" class="cat-section">
+  <p class="section-label">✦ Shine On</p>
+  <h2 class="section-title">Jewelry</h2>
+  <div class="divider"></div>
+  <p class="section-sub">Delicate to bold — jewelry brands that define your look.</p>
+  <div class="brands-grid" id="jewelry-grid">
+
+    <a href="https://www.pandora.net" target="_blank" class="brand-card" data-delay="0">
+      <img class="brand-img" src="https://logo.clearbit.com/pandora.net" alt="Pandora" onerror="this.src='https://ui-avatars.com/api/?name=Pandora&background=003366&color=fff&size=70'">
+      <div class="brand-name">Pandora</div>
+      <div class="brand-tag">Charms</div>
+    </a>
+
+    <a href="https://www.swarovski.com" target="_blank" class="brand-card" data-delay="1">
+      <img class="brand-img" src="https://logo.clearbit.com/swarovski.com" alt="Swarovski" onerror="this.src='https://ui-avatars.com/api/?name=SWK&background=7c3aed&color=fff&size=70'">
+      <div class="brand-name">Swarovski</div>
+      <div class="brand-tag">Crystal</div>
+    </a>
+
+    <a href="https://www.kendrascott.com" target="_blank" class="brand-card" data-delay="2">
+      <img class="brand-img" src="https://logo.clearbit.com/kendrascott.com" alt="Kendra Scott" onerror="this.src='https://ui-avatars.com/api/?name=KS&background=e11d48&color=fff&size=70'">
+      <div class="brand-name">Kendra Scott</div>
+      <div class="brand-tag">Colorful</div>
+    </a>
+
+    <a href="https://www.mejuri.com" target="_blank" class="brand-card" data-delay="3">
+      <img class="brand-img" src="https://logo.clearbit.com/mejuri.com" alt="Mejuri" onerror="this.src='https://ui-avatars.com/api/?name=Mejuri&background=d4af37&color=fff&size=70'">
+      <div class="brand-name">Mejuri</div>
+      <div class="brand-tag">Fine Jewelry</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- Featured Banner -->
+<div class="featured-banner">
+  <div class="featured-inner">
+    <div class="featured-text">
+      <h2>Shop Direct from the Source ✦</h2>
+      <p>Every brand card links straight to that brand's official website — no middleman, no detours. Tap any card to shop directly!</p>
+      <div class="featured-tags">
+        <span class="ftag">Official Sites Only</span>
+        <span class="ftag">Verified Brands</span>
+        <span class="ftag">Direct Shopping</span>
+        <span class="ftag">No Middleman</span>
+      </div>
+    </div>
+    <a href="#skincare" class="btn-primary" style="white-space:nowrap">Start Browsing →</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.5rem; color:rgba(255,255,255,0.6);">GlowLux ✦</p>
+  <p>Curated boutique · All brand links go directly to each brand's official website.</p>
+  <p style="margin-top:0.5rem;">© 2025 GlowLux · Made with love 💗</p>
+</footer>
+
+<script>
+// ── STARS ──
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+function initStars() {
+  stars = [];
+  const count = Math.floor((W * H) / 4000);
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.8 + 0.2,
+      speed: Math.random() * 0.3 + 0.05,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      twinklePhase: Math.random() * Math.PI * 2,
+      color: ['#fff','#fde68a','#f9a8d4','#c4b5fd'][Math.floor(Math.random()*4)]
+    });
+  }
+}
+initStars();
+
+function drawStars(t) {
+  ctx.clearRect(0, 0, W, H);
+  stars.forEach(s => {
+    const a = s.alpha * (0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinklePhase));
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = s.color;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    s.y -= s.speed * 0.1;
+    if (s.y < -5) { s.y = H + 5; s.x = Math.random() * W; }
+  });
+  requestAnimationFrame(drawStars);
+}
+requestAnimationFrame(drawStars);
+
+// ── SCROLL ANIMATIONS ──
+function revealCards() {
+  document.querySelectorAll('.brand-card:not(.visible)').forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 60) {
+      const delay = parseInt(card.dataset.delay || 0) * 80;
+      setTimeout(() => card.classList.add('visible'), delay);
+    }
+  });
+}
+
+window.addEventListener('scroll', revealCards, { passive: true });
+revealCards();
+</script>
+</body>
+</html>
